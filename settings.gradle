@@ -1,0 +1,3 @@
+rootProject.name='CatSelectorLib'
+include ':app'
+include ':app:catselectorlib'
