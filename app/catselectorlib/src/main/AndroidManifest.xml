@@ -1,2 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gini.catselectorlib" />
+    package="com.gini.catselectorlib">
+
+    <application>
+        <activity android:name=".ui.CatSelectorActivity"></activity>
+    </application>
+
+</manifest>
