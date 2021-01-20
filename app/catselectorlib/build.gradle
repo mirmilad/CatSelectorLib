@@ -16,6 +16,10 @@ android {
         consumerProguardFiles 'consumer-rules.pro'
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -44,5 +48,14 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.+'
     androidTestImplementation 'org.mockito:mockito-android:2.+'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation "org.robolectric:robolectric:4.4"
+    testImplementation 'org.robolectric:robolectric:4.4'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+
+    def retrofit_version = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    testImplementation "com.squareup.retrofit2:retrofit-mock:$retrofit_version"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_version"
 }
