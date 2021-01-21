@@ -108,4 +108,21 @@ class CatApiImageRepositoryTest {
                 )
         }
     }
+
+    @Test
+    fun test_handleException() {
+        val exception = RuntimeException("xxx")
+        val apiMock = mock<ApiSchema> {
+            onBlocking {
+                getAllPublicImages(any(), any(), any(), any(), any(), any(), any(), any())
+            } doThrow (exception)
+        }
+        val repository = CatApiImageRepository(apiMock, apiParams, 10)
+
+        runBlocking {
+            val response = repository.getImages(0)
+            assert(response is Resource.Error)
+            assertEquals(response.message, exception.message)
+        }
+    }
 }
