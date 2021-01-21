@@ -55,3 +55,14 @@ The `UIOptions` class has the following properties that allows you to customize 
 | backButtonText | CharSequence | The text of CatSelectorActivity actionbar back button | Empty |
 | backButtonStyleResId | Int | Style resource Id for CatSelectorActivity actionbar back button | 0 |
 | actionbarStyleResId | Int | Style resource Id for CatSelectorActivity actionbar | 0 |
+
+##### Startup configuration
+This library uses [App Startup library](https://developer.android.com/topic/libraries/app-startup) for first initialization. If you are using this library in your project, use `tools:node="merge"` attribute on `provider` tag. For more information please read the [official documentation](https://developer.android.com/topic/libraries/app-startup).
+
+##### Databinding configuration
+This library uses [Databinding library](https://developer.android.com/jetpack/androidx/releases/databinding). Please make sure you have enabled data biding in your project. To enable data binding, set the dataBinding build option to true in your module's build.gradle file, as shown below:
+```
+dataBinding {
+    enabled true
+}
+```
