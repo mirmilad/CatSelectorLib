@@ -78,4 +78,5 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     implementation "androidx.startup:startup-runtime:1.0.0"
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }
