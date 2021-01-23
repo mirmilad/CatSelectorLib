@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CatSelectorLibTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="catSelectorLibActionBarStyle">@style/catSelectorLibDefaultActionBarStyle</item>
+        <item name="catSelectorLibActionBarTitleStyle">@style/catSelectorLibDefaultActionBarTitleStyle</item>
+        <item name="catSelectorLibActionBarBackButtonStyle">@style/catSelectorLibDefaultActionBarBackButtonStyle</item>
+    </style>
+
+    <style name="catSelectorLibDefaultActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/default_action_bar_color</item>
+    </style>
+
+    <style name="catSelectorLibDefaultActionBarTitleStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:color">@color/default_title_color</item>
+        <item name="android:text">@string/choose_image</item>
+    </style>
+
+    <style name="catSelectorLibDefaultActionBarBackButtonStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:text">@string/back</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:color">@color/default_back_color</item>
+        <item name="android:background">@color/default_back_button_background</item>
+    </style>
+
+    <style name="download_dialog_style">
+        <item name="android:background">@drawable/download_dialog_background</item>
+        <item name="android:padding">16dp</item>
+    </style>
+</resources>

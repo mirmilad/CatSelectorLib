@@ -9,7 +9,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest= Config.NONE, sdk = [18])
+@Config(manifest= Config.NONE, minSdk = 21, maxSdk = 28)
 class ImageAdapterTest {
 
 

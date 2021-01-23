@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="darkTransparent">#80000000</color>
+    <color name="download_dialog_background_color">#ffffff</color>
+    <color name="download_dialog_stroke_color">#000000</color>
+    <color name="default_action_bar_color">#ff0006</color>
+    <color name="default_title_color">#ffffff</color>
+    <color name="default_back_color">#ffffff</color>
+    <color name="default_back_button_background">#00000000</color>
+</resources>

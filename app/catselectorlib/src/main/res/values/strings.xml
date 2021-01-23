@@ -1,1 +1,6 @@
-<resources></resources>
+<resources>
+    <string name="downloading">Downloading ...</string>
+    <string name="please_wait_to_download_image">Please wait to download image</string>
+    <string name="back">Back</string>
+    <string name="choose_image">Choose Image</string>
+</resources>

@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gini.catselectorlib">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application>
-        <activity android:name=".ui.CatSelectorActivity"></activity>
+        <activity android:name=".ui.CatSelectorActivity"
+            android:theme="@style/CatSelectorLibTheme"/>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

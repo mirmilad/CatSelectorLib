@@ -5,6 +5,7 @@ This is a simple android library that allows you browse images and select one im
 This project includes two modules named `app` and `catselectorlib`. Module `app` is the sample app that shows how to use this library and module `catselectorlib` is the source code of this library.
 
 ### Usage
+
 #### dependencies
 Import the `catselectorlib` module to your project or build the `catselectorlib` module and import `catselectorlib.arr` file in to your project.
 
@@ -31,6 +32,21 @@ Now you have the intent and you must start activity by calling `startActivityFor
 ```
 startActivityForResult(intent, YOUR_REQUEST_CODE)
 ```
+Then you must override the `onActivityResult` method in your activity. When user returns from `CatSelectorActivity`, this overrided method will be called. Then you should check the `requestCode` parameter first and if it's matched with your requestCode, then you must check the `resultCode` parameter to check if the result is `RESULT_OK` or not. In case of `RESULT_OK` you can access to the image Uri by calling `getData` method of the intent.
+```
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+	super.onActivityResult(requestCode, resultCode, data)
+	if(requestCode == REQUEST_CODE) {
+		if(resultCode == RESULT_OK) {
+			val imageUri = data?.data
+			
+			//Do your job with image here
+		}
+	}
+}
+```
+When users select an image, this library download the selected image on the cache folder and then return the Uri of downloaded image. it's your duty to delete the image file when you don't need it any more.
+
 ##### Advanced Options
 As mentioned before, `CatSelectorOptions` class has two properties that allows you customize the library.
 
@@ -50,11 +66,38 @@ The `UIOptions` class has the following properties that allows you to customize 
 
 | Property name | type | Description | Default Value |
 |---|---|---|---|
-| title | CharSequence | The title of CatSelectorActivity actionbar | Empty |
-| titleStyleResId | Int | Style resource Id for CatSelectorActivity actionbar tile | 0 |
-| backButtonText | CharSequence | The text of CatSelectorActivity actionbar back button | Empty |
-| backButtonStyleResId | Int | Style resource Id for CatSelectorActivity actionbar back button | 0 |
-| actionbarStyleResId | Int | Style resource Id for CatSelectorActivity actionbar | 0 |
+| title | CharSequence? | The title of CatSelectorActivity actionbar. Note: If you set this value, it will replace the value that you set in the style | null |
+| backButtonText | CharSequence? | The text of CatSelectorActivity actionbar back button. Note: If you set this value, it will replace the value that you set in the style | null |
+| theme | Int | Theme resource Id for CatSelectorActivity | 0 |
+
+If you like to customize the UI, you must define a new style for `CatSelectorActivity` and pass this style through `theme` property of `UiOptions` class. This style should use `@style/CatSelectorLibTheme` or one of appcompat's [NoActionBar](https://developer.android.com/reference/androidx/appcompat/R.style#Theme_AppCompat_NoActionBar) themes as parent. 
+```
+<style name="CatSelectorCustomTheme" parent="@style/CatSelectorLibTheme">
+	...
+</style>
+```
+or 
+```
+<style name="CatSelectorCustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+	...
+</style>
+```
+Then you can override the `CatSelectorActivity` theme easily. There are 3 custom attributes that allow you customize actionbar, title and back button easily, as below:
+```
+<style name="CatSelectorCustomTheme" parent="@style/CatSelectorLibTheme">
+
+	<item name="catSelectorLibActionBarStyle">...</item>
+	<item name="catSelectorLibActionBarTitleStyle">...</item>
+	<item name="catSelectorLibActionBarBackButtonStyle">...</item>
+	
+</style>
+```
+Important: if you don't use `@style/CatSelectorLibTheme` as parent of your theme, you must provide `catSelectorLibActionBarTitleStyle` and `catSelectorLibActionBarBackButtonStyle` attributes. You can extend the default styles (`catSelectorLibDefaultActionBarTitleStyle`, `catSelectorLibDefaultActionBarBackButtonStyle`) and override them or create a new style. If you have decided to create a new style for title or back button, you must provide both `android:layout_width` and `android:layout_height` values for your styles.
+
+Also, you can set the title or back button text programatically. It will override the default text or the custom text that you have provided in your custom style.
+```
+val uiOptions = UIOptions("Custom Title", "Custom Back", R.style.CatSelectorCustomTheme)
+```
 
 ##### Startup configuration
 This library uses [App Startup library](https://developer.android.com/topic/libraries/app-startup) for first initialization. If you are using this library in your project, use `tools:node="merge"` attribute on `provider` tag. For more information please read the [official documentation](https://developer.android.com/topic/libraries/app-startup).
@@ -66,3 +109,6 @@ dataBinding {
     enabled true
 }
 ```
+
+### More Information
+For more information and samples, please look at the sample project source code.

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -6,6 +6,34 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Custom Cat selector lib actionbar -->
+    <style name="CatSelectorCustomTheme" parent="@style/CatSelectorLibTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="catSelectorLibActionBarStyle">@style/catSelectorLibCustomActionBarStyle</item>
+        <item name="catSelectorLibActionBarTitleStyle">@style/catSelectorLibCustomActionBarTitleStyle</item>
+        <item name="catSelectorLibActionBarBackButtonStyle">@style/catSelectorLibCustomActionBarBackButtonStyle</item>
+    </style>
+
+    <style name="catSelectorLibCustomActionBarStyle" parent="@style/catSelectorLibDefaultActionBarStyle">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="catSelectorLibCustomActionBarTitleStyle" parent="@style/catSelectorLibDefaultActionBarTitleStyle">
+        <item name="android:textColor">@color/titleTextColor</item>
+        <item name="android:text">@string/custom_title_from_style</item>
+    </style>
+
+    <style name="catSelectorLibCustomActionBarBackButtonStyle" parent="@style/catSelectorLibDefaultActionBarBackButtonStyle">
+        <item name="android:background">@color/backButtonColor</item>
+        <item name="android:textColor">@color/backButtonTextColor</item>
+        <item name="android:drawableRight">@drawable/ic_chevron_right_black_24dp</item>
+        <item name="android:drawableTint" tools:targetApi="m">@color/backButtonTextColor</item>
+        <item name="drawableTint">@color/backButtonTextColor</item>
     </style>
 
 </resources>

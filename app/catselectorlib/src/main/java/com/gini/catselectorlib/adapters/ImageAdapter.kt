@@ -6,13 +6,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gini.catselectorlib.databinding.ImageAdapterItemBinding
 import com.gini.catselectorlib.models.ImageDto
+import com.gini.catselectorlib.utils.IRecyclerAdapterOnItemClickListener
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     private val items : MutableList<ImageDto> = arrayListOf()
+    var onItemClickListener: IRecyclerAdapterOnItemClickListener<ImageDto, ImageAdapter.ViewHolder>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageAdapter.ViewHolder {
-        val binding = ImageAdapterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false);
-        return ViewHolder(binding)
+        val binding = ImageAdapterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding).apply {
+            binding.root.setOnClickListener {
+                onItemClickListener?.let {
+                    val position = this.adapterPosition
+                    it.onItemClick(
+                        this@ImageAdapter,
+                        this,
+                        items[adapterPosition],
+                        adapterPosition
+                    )
+                }
+            }
+        }
     }
 
     override fun getItemCount() = items.size

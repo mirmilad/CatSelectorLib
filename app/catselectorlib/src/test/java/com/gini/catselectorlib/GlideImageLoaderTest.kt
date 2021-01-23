@@ -3,17 +3,15 @@ package com.gini.catselectorlib
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
 import com.gini.catselectorlib.utils.imageloader.GlideImageLoader
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.mockStatic
 
 class GlideImageLoaderTest {
 
@@ -29,11 +27,8 @@ class GlideImageLoaderTest {
     }
     private val imageView = mock<ImageView>()
 
-    init {
-        mockStatic(Glide::class.java).apply {
-            whenever(Glide.with(any(Context::class.java))).thenReturn(requestManager)
-        }
-    }
+    @get:Rule
+    val glideRule = GlideTestRule(requestManager)
 
     @Test
     fun test_loadImage() {

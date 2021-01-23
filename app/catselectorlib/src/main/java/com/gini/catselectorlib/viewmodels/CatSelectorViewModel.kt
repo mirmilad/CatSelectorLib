@@ -7,11 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.gini.catselectorlib.models.ImageDto
 import com.gini.catselectorlib.repositories.Resource
 import com.gini.catselectorlib.repositories.image.IImageRepository
+import com.gini.catselectorlib.utils.imageloader.IImageDownloader
 import kotlinx.coroutines.launch
+import java.io.File
+import java.lang.Exception
 
 class CatSelectorViewModel(
     private val imageRepository: IImageRepository,
-    private val pageSize: Int
+    private val pageSize: Int,
+    private val imageDownloader: IImageDownloader,
+    private val downloadPath: String,
 ) : ViewModel() {
 
     private val _images = object : MutableLiveData<List<ImageDto>>() {
@@ -24,12 +29,15 @@ class CatSelectorViewModel(
     }
     private val _loading = MutableLiveData(false)
     private val _error = MutableLiveData<String>()
+    private val _downloading = MutableLiveData(false)
+    private val _image = MutableLiveData<File>()
     private var hasMoreData = true
 
     val images: LiveData<List<ImageDto>> = _images
     val loading: LiveData<Boolean> = _loading
     val error: LiveData<String> = _error
-
+    val downloading: LiveData<Boolean> = _downloading
+    val image: LiveData<File> = _image
 
     fun loadNewPage() {
         if (this._loading.value == true || !hasMoreData)
@@ -56,4 +64,19 @@ class CatSelectorViewModel(
         }
     }
 
+    fun downloadImage(image: ImageDto) {
+        if(_downloading.value == true)
+            return
+
+        viewModelScope.launch {
+            _downloading.value = true
+            try {
+                _image.value = imageDownloader.download(image.url, downloadPath)
+            } catch (e: Exception) {
+                _error.value = e.message
+            } finally {
+                _downloading.value = false
+            }
+        }
+    }
 }

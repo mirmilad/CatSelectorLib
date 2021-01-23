@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.gini.catselectorlib.models.ImageDto
 import com.gini.catselectorlib.repositories.Resource
 import com.gini.catselectorlib.repositories.image.IImageRepository
+import com.gini.catselectorlib.utils.imageloader.IImageDownloader
 import com.gini.catselectorlib.viewmodels.CatSelectorViewModel
 import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.test.runBlockingTest
@@ -13,6 +14,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
+import java.io.File
+import java.lang.RuntimeException
 
 class CatSelectorViewModelTest {
     @get:Rule
@@ -23,7 +26,11 @@ class CatSelectorViewModelTest {
     private val loadingObserver = mock<Observer<Boolean>>()
     private val errorObserver = mock<Observer<String>>()
     private val imagesObserver = mock<Observer<List<ImageDto>>>()
+    private val imageObserver = mock<Observer<File>>()
+    private val downloadingObserver = mock<Observer<Boolean>>()
     private val imageRepository = mock<IImageRepository>()
+    private val imageDownloader = mock<IImageDownloader>()
+    private val imageDownloadPath = "xxx"
     private val pageSize = 3
 
     private lateinit var fakeLifeCycleOwner: FakeLifeCycleOwner
@@ -33,10 +40,12 @@ class CatSelectorViewModelTest {
     fun setUp() {
         fakeLifeCycleOwner = FakeLifeCycleOwner()
 
-        catSelectorViewModel = CatSelectorViewModel(imageRepository, pageSize)
+        catSelectorViewModel = CatSelectorViewModel(imageRepository, pageSize, imageDownloader, imageDownloadPath)
         catSelectorViewModel.loading.observe(fakeLifeCycleOwner, loadingObserver)
         catSelectorViewModel.error.observe(fakeLifeCycleOwner, errorObserver)
         catSelectorViewModel.images.observe(fakeLifeCycleOwner, imagesObserver)
+        catSelectorViewModel.image.observe(fakeLifeCycleOwner, imageObserver)
+        catSelectorViewModel.downloading.observe(fakeLifeCycleOwner, downloadingObserver)
 
         fakeLifeCycleOwner.onCreate()
     }
@@ -278,6 +287,54 @@ class CatSelectorViewModelTest {
                 verify(imagesObserver).onChanged(pages[0] + pages[1])
                 verify(imagesObserver).onChanged(pages[0] + pages[1] + pages[2])
             }
+        }
+    }
+
+    @Test
+    fun test_invokeImageDownloader() {
+        val image = ImageDto("id", "fake image url", 0, 0)
+        coroutineTestRule.testDispatcher.runBlockingTest {
+            fakeLifeCycleOwner.onResume()
+            catSelectorViewModel.downloadImage(image)
+            verify(imageDownloader, times(1)).download(image.url, imageDownloadPath)
+        }
+    }
+
+    @Test
+    fun test_downloadingImage() {
+        val image = ImageDto("id", "fake image url", 0, 0)
+        coroutineTestRule.testDispatcher.runBlockingTest {
+            val imageFile = File("")
+            whenever(imageDownloader.download(any(), any())).thenReturn(imageFile)
+            fakeLifeCycleOwner.onResume()
+            catSelectorViewModel.downloadImage(image)
+
+            inOrder(downloadingObserver).apply {
+                verify(downloadingObserver).onChanged(true)
+                verify(downloadingObserver).onChanged(false)
+            }
+
+            verify(imageObserver).onChanged(imageFile)
+            verify(errorObserver, never()).onChanged(any())
+        }
+    }
+
+    @Test
+    fun test_downloadingFailed() {
+        val image = ImageDto("id", "fake image url", 0, 0)
+        val exception = RuntimeException("Can not download image")
+        coroutineTestRule.testDispatcher.runBlockingTest {
+            whenever(imageDownloader.download(any(), any())).thenThrow(exception)
+            fakeLifeCycleOwner.onResume()
+            catSelectorViewModel.downloadImage(image)
+
+            inOrder(downloadingObserver).apply {
+                verify(downloadingObserver).onChanged(true)
+                verify(downloadingObserver).onChanged(false)
+            }
+
+            verify(imageObserver, never()).onChanged(any())
+            verify(errorObserver).onChanged(exception.message)
         }
     }
 }

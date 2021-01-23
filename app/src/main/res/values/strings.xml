@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CatSelectorLib</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="back">Back</string>
+    <string name="custom_title">Custom Title</string>
+    <string name="custom_back">Custom Back</string>
+    <string name="custom_title_from_style">Custom Title From Style</string>
 </resources>

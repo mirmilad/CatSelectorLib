@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="catSelectorLibActionBarStyle" format="reference"></attr>
+    <attr name="catSelectorLibActionBarTitleStyle" format="reference"></attr>
+    <attr name="catSelectorLibActionBarBackButtonStyle" format="reference"></attr>
+</resources>
